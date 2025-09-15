@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django Blog - {% block title %}{% endblock %}</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Summernote CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .main-content {
+            flex: 1 0 auto;
+        }
+        .footer {
+            flex-shrink: 0;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .navbar-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .main-content {
+            flex: 1 0 auto;
+        }
+        .footer {
+            flex-shrink: 0;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .navbar-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        /* Summernote customization */
+        .note-editor.note-frame {
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+        }
+        .note-editor.note-frame .note-toolbar {
+            background-color: #f9fafb;
+            border-bottom: 1px solid #d1d5db;
+            border-radius: 0.375rem 0.375rem 0 0;
+        }
+        .note-btn {
+            background: white;
+            border: 1px solid #d1d5db;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="gradient-bg text-white navbar-shadow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'blog-home' %}" class="flex items-center space-x-2">
+                        <i class="fas fa-blog text-2xl"></i>
+                        <span class="font-bold text-xl">DjangoBlog</span>
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="flex items-center md:hidden">
+                    <button type="button" class="text-white focus:outline-none" id="mobile-menu-button">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{% url 'blog-home' %}" class="text-white hover:text-gray-200 transition duration-150 flex items-center space-x-1">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    <a href="{% url 'blog-posts' %}" class="text-white hover:text-gray-200 transition duration-150 flex items-center space-x-1">
+                        <i class="fas fa-newspaper"></i>
+                        <span>Posts</span>
+                    </a>
+                    <a href="{% url 'blog-about' %}" class="text-white hover:text-gray-200 transition duration-150 flex items-center space-x-1">
+                        <i class="fas fa-info-circle"></i>
+                        <span>About</span>
+                    </a>
+                     <a href="{% url 'blog-contact' %}" class="text-white hover:text-gray-200 transition duration-150 flex items-center space-x-1">
+                        <i class="fa-solid fa-phone-volume"></i>
+                        <span>Contact</span>
+                    </a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'post-create' %}" class="bg-white text-purple-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition duration-150 flex items-center space-x-1">
+                        <i class="fas fa-plus"></i>
+                        <span>New Post</span>
+                    </a>
+                    {% endif %}
+                </div>
+
+                <!-- User Auth Section -->
+                <div class="hidden md:flex items-center space-x-4">
+                    {% if user.is_authenticated %}
+                    <div class="relative group">
+                        <button class="flex items-center space-x-2 text-white focus:outline-none">
+                            <div class="w-8 h-8 rounded-full bg-white text-purple-700 flex items-center justify-center font-semibold">
+                                {{ user.username|first|upper }}
+                            </div>
+                            <span>{{ user.username }}</span>
+                            <i class="fas fa-chevron-down text-sm"></i>
+                        </button>
+                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+                            <a href="{% url 'account_logout' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                    {% else %}
+                    <a href="{% url 'account_login' %}" class="text-white hover:text-gray-200 transition duration-150 flex items-center space-x-1">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login</span>
+                    </a>
+                    <a href="{% url 'account_signup' %}" class="bg-white text-purple-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition duration-150 flex items-center space-x-1">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Register</span>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="hidden md:hidden bg-purple-800" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="{% url 'blog-home' %}" class="block px-3 py-2 text-white rounded hover:bg-purple-700 flex items-center space-x-2">
+                    <i class="fas fa-home w-5"></i>
+                    <span>Home</span>
+                </a>
+                <a href="{% url 'blog-posts' %}" class="block px-3 py-2 text-white rounded hover:bg-purple-700 flex items-center space-x-2">
+                    <i class="fas fa-newspaper w-5"></i>
+                    <span>Posts</span>
+                </a>
+                <a href="{% url 'blog-about' %}" class="block px-3 py-2 text-white rounded hover:bg-purple-700 flex items-center space-x-2">
+                    <i class="fas fa-info-circle w-5"></i>
+                    <span>About</span>
+                </a>
+                 <a href="{% url 'blog-contact' %}" class="block px-3 py-2 text-white rounded hover:bg-purple-700 flex items-center space-x-2">
+                    <i class="fa-solid fa-phone-volume"></i>
+                    <span>Contact</span>
+                </a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'post-create' %}" class="block px-3 py-2 text-white rounded hover:bg-purple-700 flex items-center space-x-2">
+                    <i class="fas fa-plus w-5"></i>
+                    <span>New Post</span>
+                </a>
+                <a href="{% url 'account_logout' %}" class="block px-3 py-2 text-white rounded hover:bg-purple-700 flex items-center space-x-2">
+                    <i class="fas fa-sign-out-alt w-5"></i>
+                    <span>Logout</span>
+                </a>
+                {% else %}
+                <a href="{% url 'account_login' %}" class="block px-3 py-2 text-white rounded hover:bg-purple-700 flex items-center space-x-2">
+                    <i class="fas fa-sign-in-alt w-5"></i>
+                    <span>Login</span>
+                </a>
+                <a href="{% url 'account_signup' %}" class="block px-3 py-2 text-white rounded hover:bg-purple-700 flex items-center space-x-2">
+                    <i class="fas fa-user-plus w-5"></i>
+                    <span>Register</span>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Messages -->
+            {% if messages %}
+            <div class="mb-6 space-y-3">
+                {% for message in messages %}
+                <div class="rounded-md p-4 {% if message.tags == 'error' %}bg-red-50 text-red-700{% elif message.tags == 'success' %}bg-green-50 text-green-700{% elif message.tags == 'warning' %}bg-yellow-50 text-yellow-700{% else %}bg-blue-50 text-blue-700{% endif %} flex items-start">
+                    <div class="flex-shrink-0">
+                        {% if message.tags == 'error' %}
+                        <i class="fas fa-exclamation-circle mt-0.5"></i>
+                        {% elif message.tags == 'success' %}
+                        <i class="fas fa-check-circle mt-0.5"></i>
+                        {% elif message.tags == 'warning' %}
+                        <i class="fas fa-exclamation-triangle mt-0.5"></i>
+                        {% else %}
+                        <i class="fas fa-info-circle mt-0.5"></i>
+                        {% endif %}
+                    </div>
+                    <div class="ml-3 flex-1">
+                        <p class="text-sm font-medium">{{ message }}</p>
+                    </div>
+                    <button type="button" class="ml-auto pl-3" onclick="this.parentElement.style.display='none'">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <!-- Content Block -->
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer gradient-bg text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 flex items-center">
+                        <i class="fas fa-blog mr-2"></i> DjangoBlog
+                    </h3>
+                    <p class="text-purple-100">Share your thoughts and ideas with the world through our blogging platform.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'blog-home' %}" class="text-purple-100 hover:text-white transition">Home</a></li>
+                        <li><a href="{% url 'blog-posts' %}" class="text-purple-100 hover:text-white transition">All Posts</a></li>
+                        <li><a href="{% url 'blog-about' %}" class="text-purple-100 hover:text-white transition">About Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Connect With Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-purple-100 hover:text-white transition">
+                            <i class="fab fa-facebook-f text-lg"></i>
+                        </a>
+                        <a href="#" class="text-purple-100 hover:text-white transition">
+                            <i class="fab fa-twitter text-lg"></i>
+                        </a>
+                        <a href="#" class="text-purple-100 hover:text-white transition">
+                            <i class="fab fa-instagram text-lg"></i>
+                        </a>
+                        <a href="#" class="text-purple-100 hover:text-white transition">
+                            <i class="fab fa-linkedin-in text-lg"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-purple-400 mt-8 pt-6 text-center text-purple-200">
+                <p>&copy; 2025 DjangoBlog. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- jQuery (required for Summernote) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Summernote JS -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuButton = document.getElementById('mobile-menu-button');
+            
+            if (!mobileMenu.contains(event.target) && !menuButton.contains(event.target) && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+         // Initialize Summernote
+        $(document).ready(function() {
+            $('#id_content').summernote({
+                height: 300,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'clear']],
+                    ['fontname', ['fontname']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'hr']],
+                    ['view', ['fullscreen', 'codeview']],
+                    ['help', ['help']]
+                ],
+                fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana', 'Inter'],
+                fontNamesIgnoreCheck: ['Inter']
+            });
+        });
+    </script>
+</body>
+</html>

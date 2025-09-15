@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div>
+            <div class="flex justify-center">
+                <i class="fas fa-user-plus text-6xl text-purple-600 bg-white p-4 rounded-full"></i>
+            </div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Create Your Account
+            </h2>
+            <p class="mt-2 text-center text-sm text-gray-600">
+                Join our community to start sharing your ideas
+            </p>
+        </div>
+        
+        <div class="card-hover bg-white py-8 px-6 shadow-xl rounded-lg">
+            <form class="mt-8 space-y-6" method="POST">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                <div class="rounded-md bg-red-50 p-4 mb-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-circle h-5 w-5 text-red-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-red-800">
+                                Please correct the following errors
+                            </h3>
+                            <div class="mt-2 text-sm text-red-700">
+                                {% for error in form.non_field_errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="space-y-4">
+                    <div>
+                        <label for="id_email" class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-envelope text-gray-400"></i>
+                            </div>
+                            <input type="email" name="email" id="id_email" class="focus:ring-purple-500 focus:border-purple-500 block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md" placeholder="Enter your email" required>
+                        </div>
+                        {% if form.email.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {% for error in form.email.errors %}
+                                <p><i class="fas fa-exclamation-circle mr-1"></i> {{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="id_password1" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-gray-400"></i>
+                            </div>
+                            <input type="password" name="password1" id="id_password1" class="focus:ring-purple-500 focus:border-purple-500 block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md" placeholder="Create a password" required>
+                        </div>
+                        {% if form.password1.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {% for error in form.password1.errors %}
+                                <p><i class="fas fa-exclamation-circle mr-1"></i> {{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="id_password2" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-gray-400"></i>
+                            </div>
+                            <input type="password" name="password2" id="id_password2" class="focus:ring-purple-500 focus:border-purple-500 block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md" placeholder="Confirm your password" required>
+                        </div>
+                        {% if form.password2.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {% for error in form.password2.errors %}
+                                <p><i class="fas fa-exclamation-circle mr-1"></i> {{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <input id="terms" name="terms" type="checkbox" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded" required>
+                        <label for="terms" class="ml-2 block text-sm text-gray-700">
+                            I agree to the <a href="#" class="font-medium text-purple-600 hover:text-purple-500">Terms of Service</a> and <a href="#" class="font-medium text-purple-600 hover:text-purple-500">Privacy Policy</a>
+                        </label>
+                    </div>
+                    
+                    <div>
+                        <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-150 ease-in-out">
+                            <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                                <i class="fas fa-user-plus text-purple-200 group-hover:text-white"></i>
+                            </span>
+                            Create Account
+                        </button>
+                    </div>
+                </div>
+            </form>
+            
+            {% get_providers as socialaccount_providers %}
+            {% if socialaccount_providers %}
+            <div class="mt-6">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-white text-gray-500">
+                            Or continue with
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mt-6 grid grid-cols-2 gap-3">
+                    {% for provider in socialaccount_providers %}
+                        {% if provider.id == "google" %}
+                            <a href="{% provider_login_url provider.id process='login' %}" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-150 ease-in-out">
+                                <i class="fab fa-google text-red-500 mr-2"></i>
+                                Google
+                            </a>
+                        {% elif provider.id == "facebook" %}
+                            <a href="{% provider_login_url provider.id process='login' %}" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-150 ease-in-out">
+                                <i class="fab fa-facebook text-blue-600 mr-2"></i>
+                                Facebook
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Already have an account?
+                    <a href="{% url 'account_login' %}" class="font-medium text-purple-600 hover:text-purple-500 transition duration-150 ease-in-out">
+                        Sign in here
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

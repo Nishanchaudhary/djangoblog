@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}About{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Header Section -->
+    <div class="text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">About Django Blog</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">A modern blogging platform built with Django that empowers writers to share their stories with the world.</p>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-2xl p-8 md:p-12 mb-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Share Your Voice</h2>
+                <p class="text-lg text-gray-700 mb-6">
+                    Our platform is designed to give writers a beautiful space to express their ideas, 
+                    connect with readers, and build a community around meaningful content.
+                </p>
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center">
+                        <i class="fas fa-feather text-white text-xl"></i>
+                    </div>
+                    <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center">
+                        <i class="fas fa-users text-white text-xl"></i>
+                    </div>
+                    <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-white text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-center">
+                <div class="w-full max-w-md bg-white rounded-xl shadow-lg p-6">
+                    <div class="text-center mb-6">
+                        <i class="fas fa-blog text-5xl text-purple-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold text-gray-900">Modern Blogging</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-check text-green-600"></i>
+                            </div>
+                            <span class="text-gray-700">Easy content creation</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-check text-green-600"></i>
+                            </div>
+                            <span class="text-gray-700">Social authentication</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-check text-green-600"></i>
+                            </div>
+                            <span class="text-gray-700">Responsive design</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="mb-16">
+        <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">What You Can Do</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="text-center p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-edit text-2xl text-purple-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Create Posts</h3>
+                <p class="text-gray-600">Write and share your thoughts with beautiful formatting and images.</p>
+            </div>
+
+            <div class="text-center p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-comments text-2xl text-purple-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Engage with Comments</h3>
+                <p class="text-gray-600">Join conversations and build community through meaningful discussions.</p>
+            </div>
+
+            <div class="text-center p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-sign-in-alt text-2xl text-purple-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Easy Sign Up</h3>
+                <p class="text-gray-600">Register with email, Google, or Facebook for seamless access.</p>
+            </div>
+
+            <div class="text-center p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-cog text-2xl text-purple-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Manage Content</h3>
+                <p class="text-gray-600">Full control over your posts with easy editing and deletion options.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

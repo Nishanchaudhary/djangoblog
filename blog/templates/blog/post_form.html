@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}{% if form.instance.pk %}Update{% else %}Create{% endif %} Post{% endblock %}
+
+{% block content %}
+<div class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full mb-4">
+                <i class="fas fa-edit text-white text-2xl"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-900">
+                {% if form.instance.pk %}Update Your Post{% else %}Create New Post{% endif %}
+            </h1>
+            <p class="text-gray-600 mt-2">
+                {% if form.instance.pk %}
+                Make changes to your existing post
+                {% else %}
+                Share your thoughts and ideas with the community
+                {% endif %}
+            </p>
+        </div>
+
+        <!-- Form Card -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+            <div class="bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-4">
+                <h2 class="text-xl font-semibold text-white">
+                    <i class="fas fa-file-alt mr-2"></i>
+                    Post Details
+                </h2>
+            </div>
+            
+            <div class="p-6">
+                <form method="POST" enctype="multipart/form-data" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <!-- Title Field -->
+                    <div>
+                        <label for="id_title" class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-heading mr-2 text-purple-500"></i>Title
+                        </label>
+                        <div class="relative">
+                            <input type="text" name="title" id="id_title" 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-150"
+                                placeholder="Enter a compelling title"
+                                value="{{ form.title.value|default:'' }}">
+                        </div>
+                        {% if form.title.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {% for error in form.title.errors %}
+                                <p><i class="fas fa-exclamation-circle mr-1"></i> {{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Content Field -->
+                    <div>
+                        <label for="id_content" class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-align-left mr-2 text-purple-500"></i>Content
+                        </label>
+                        <div class="relative">
+                            <textarea name="content" id="id_content" rows="8"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-150"
+                                placeholder="Write your post content here...">{{ form.content.value|default:'' }}</textarea>
+                        </div>
+                        {% if form.content.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {% for error in form.content.errors %}
+                                <p><i class="fas fa-exclamation-circle mr-1"></i> {{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Image Field -->
+                    <div>
+                        <label for="id_image" class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-image mr-2 text-purple-500"></i>Featured Image
+                        </label>
+                        <div class="relative">
+                            <input type="file" name="image" id="id_image" 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-150 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
+                        </div>
+                        {% if form.image.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {% for error in form.image.errors %}
+                                <p><i class="fas fa-exclamation-circle mr-1"></i> {{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        {% if form.instance.image %}
+                        <div class="mt-2">
+                            <p class="text-sm text-gray-500">Current image:</p>
+                            <img src="{{ form.instance.image.url }}" alt="Current post image" class="mt-1 w-32 h-32 object-cover rounded-lg border">
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Categories Field -->
+                    {% if form.categories %}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-tags mr-2 text-purple-500"></i>Categories
+                        </label>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            {% for checkbox in form.categories %}
+                            <div class="flex items-center">
+                                {{ checkbox.tag }}
+                                <label for="{{ checkbox.id_for_label }}" class="ml-2 text-sm text-gray-700 cursor-pointer">
+                                    {{ checkbox.choice_label }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% if form.categories.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {% for error in form.categories.errors %}
+                                <p><i class="fas fa-exclamation-circle mr-1"></i> {{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Submit Button -->
+                    <div class="pt-4">
+                        <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-purple-700 hover:to-indigo-700 transition duration-150 ease-in-out transform hover:-translate-y-0.5 flex items-center justify-center">
+                            <i class="fas fa-paper-plane mr-2"></i>
+                            {% if form.instance.pk %}Update Post{% else %}Create Post{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Footer -->
+            <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+                <p class="text-sm text-gray-500 text-center">
+                    <i class="fas fa-lightbulb mr-1 text-yellow-500"></i>
+                    Tips: Use clear images and engaging titles to attract more readers
+                </p>
+            </div>
+        </div>
+
+        <!-- Back Link -->
+        <div class="text-center mt-6">
+            <a href="{% if form.instance.pk %}{% url 'post-detail' form.instance.pk %}{% else %}{% url 'blog-posts' %}{% endif %}" 
+               class="text-purple-600 hover:text-purple-700 font-medium inline-flex items-center">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Back to {% if form.instance.pk %}Post{% else %}Posts{% endif %}
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    input[type="checkbox"] {
+        accent-color: #8B5CF6;
+        width: 1.1em;
+        height: 1.1em;
+    }
+    
+    textarea {
+        resize: vertical;
+        min-height: 200px;
+    }
+</style>
+{% endblock %}
