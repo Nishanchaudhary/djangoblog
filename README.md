@@ -1,0 +1,1 @@
+Django Blog is a modern, responsive blogging platform that allows users to create, manage, and share content effortlessly. Built with Django framework, it incorporates Summernote WYSIWYG editor for rich content creation and supports social authentication via Facebook and Google.
