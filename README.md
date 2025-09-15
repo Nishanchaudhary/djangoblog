@@ -16,5 +16,14 @@ Django Blog is a modern, responsive blogging platform that allows users to creat
 - Add Comments: Users can comment on blog posts
 - Summernote Integration: Full-featured WYSIWYG editor
 - Pagination: Efficient content browsing with paginated lists
-
+  
+# Home
 ![Django Blog Homepage](./home.png)
+# Posts
+![Django Blog Homepage](./post.png)
+# About
+![Django Blog Homepage](./about.png)
+# Contact
+![Django Blog Homepage](./contact.png)
+# Post_blog
+![Django Blog Homepage](./post_blog.png)
